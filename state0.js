@@ -1,14 +1,36 @@
 var demo = {};
+//center variables
+var centerX   = 1500 / 2;
+var centerY   = 1000 / 2;
+var tune;
+var speed = 4;
+
 demo.state0 = function () {};
 demo.state0.prototype = {
-  preload:  function () {},
+  preload:  function () {
+    game.load.image('tune', 'assets/sprites/Thoung2.png')
+  },
   create:   function () {
     game.stage.backgroundColor = '#ddd';
     console.log('State 0');
     addChangeStateEventListeners();
+    //create scaling
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    //add sprite to the screen
+    tune = game.add.sprite(centerX, centerY, 'tune');
+    tune.anchor.setTo(0.5, 0.5);
   },
-  update:   function () {}
+  update:   function () {
+    if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+      tune.x += speed;
+    } else if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+      tune.x -= speed;
+    } else if (game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
+      tune.y -= speed;
+    } else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
+      tune.y += speed;
+    }
+  }
 };
 
 function changeState (i, stateNum) {
