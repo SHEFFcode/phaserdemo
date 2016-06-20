@@ -8,8 +8,8 @@ var speed = 8;
 demo.state0 = function () {};
 demo.state0.prototype = {
   preload:  function () {
-    game.load.image('tune', 'assets/sprites/Thoung2.png');
-    game.load.image('background', 'assets/backgrounds/background.png')
+    game.load.spritesheet('tune', 'assets/spritesheets/thoung_sprite.png', 260, 260);
+    game.load.image('background', 'assets/backgrounds/background.png');
   },
   create:   function () {
     //initialize the physics engine
@@ -28,6 +28,8 @@ demo.state0.prototype = {
     game.physics.enable(tune);
     //Make tune collide with the world bounds.
     tune.body.collideWorldBounds = true;
+    //Set up the walking animations
+    tune.animations.add('walk', [0, 1, 2]);
 
     //camera movements
     game.world.setBounds(0, 0, 2813, 1000);
@@ -38,9 +40,11 @@ demo.state0.prototype = {
     if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
       tune.scale.setTo(0.7, 0.7);
       tune.x += speed;
+      tune.animations.play('walk', 14, true);
     } else if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
       tune.scale.setTo(-0.7, 0.7);
       tune.x -= speed;
+      tune.animations.play('walk', 14, true);
     } else if (game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
       tune.y -= speed;
       if (tune.y < 520) {
@@ -48,6 +52,9 @@ demo.state0.prototype = {
       }
     } else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
       tune.y += speed;
+    } else {
+      tune.animations.stop('walk');
+      tune.frame = 0;
     }
   }
 };
